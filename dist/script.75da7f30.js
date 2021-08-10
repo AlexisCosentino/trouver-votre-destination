@@ -209,20 +209,37 @@ function generateSuggestion(data) {
   var section = document.querySelector('#suggestions');
   section.appendChild(card);
 }
-},{"./search_city":"search_city.js"}],"script.js":[function(require,module,exports) {
+},{"./search_city":"search_city.js"}],"search_city_vue.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.description = exports.search_bar = void 0;
+var search_bar = "<section class=\"py-5 flex flex-col justify-center items-center\" id=\"search-bar\">\n<label for=\"input-search\">Entrer votre destination :</label>\n  <input\n    id=\"input-search\"\n    type=\"text\"\n    placeholder=\"Lyon, Marseille, etc.\"\n    class=\" text-center mt-2 h-14 rounded-3xl w-5/6 text-10 bg-gray-50 px-10 border-purple-200 border-2\"></input>\n</section>\n<section id=\"suggest\">\n</section";
+exports.search_bar = search_bar;
+var description = "<section class=\"flex flex-wrap justify-around\">\n<div class=\"w-5/12 flex flex-col items-center m-5\">\n  <h3 id=\"titleWeather\" class=\"text-xl font-medium\">Quel m\xE9t\xE9o?</h3>\n  <span id=\"descriptionWeather\" class=\"italic\"></span>\n  <ul>\n    <li>Il fait <span id=\"temperature\">surement tr\xE8s chaud!</span></li>\n    <li>La temp\xE9rature ressentie est <span id=\"temperatureFeel\">encore plus chaude!</span></li>\n    <li>L'humidit\xE9 est de <span id=\"humidity\">100% pour le pastis!</span></li>\n    <li>La pression est de <span id=\"pressure\">0 au niveau des tongs.</span></li>\n    <li>La temp\xE9rature maximum sera de <span id=\"tempMax\">beaucoup.</span></li>\n    <li>La temp\xE9rature minimum sera de <span id=\"tempMin\">quelques degr\xE9s de moins.</span></li>\n  </ul>\n</div>\n</section>";
+exports.description = description;
+},{}],"script.js":[function(require,module,exports) {
 "use strict";
 
 var _search_city = require("./search_city");
 
 var _suggestions = require("./suggestions");
 
-// VARIABLES
-var map = L.map('mapid').setView([46.71109, 1.7191036], 1);
+var _search_city_vue = require("./search_city_vue");
+
+$('#app').append(" <header class=\"h-32 w-screen bg-purple-600 bg-opacity-25  flex flex-col justify-center items-center\">\n                        <h1 class=\"text-3xl font-medium\">Bienvenue sur Trouver votre Destination!</h1>\n                        <span>Et partez en toute tranquilit\xE9 :D</span>\n                      </header>\n                      <main id=\"main\">\n                      </main>");
+$('#main').append(_search_city_vue.search_bar); // FUNCTION TO SEARCH CITY AND ADD SUGGESTION
+
 $("#input-search").change(function () {
   var city = this.value;
   (0, _search_city.searchCity)(city, map);
+  $("#suggest").append("<section id=\"suggestions\" class=\"flex flex-row h-16 items-center justify-center mb-5\"></section>");
   (0, _suggestions.searchForSuggestion)(city);
-}); // MAP CONTROL
+});
+$("#main").append("<section>\n<div id=\"mapid\"></div>\n</section>");
+var map = L.map('mapid').setView([46.71109, 1.7191036], 1); // MAP CONTROL
 
 L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
   attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -231,8 +248,10 @@ L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_toke
   tileSize: 512,
   zoomOffset: -1,
   accessToken: 'pk.eyJ1IjoiYWxleGlzY29zZW50aW5vIiwiYSI6ImNrczVxMHp6MjA0MHUybm9jcmo3bm9nbHMifQ.xwQWBMudrHk_Z_YPgmIocg'
-}).addTo(map);
-},{"./search_city":"search_city.js","./suggestions":"suggestions.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+}).addTo(map); // ADD DESCRIPTON OF WEATHER
+
+$("#main").append(_search_city_vue.description);
+},{"./search_city":"search_city.js","./suggestions":"suggestions.js","./search_city_vue":"search_city_vue.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
